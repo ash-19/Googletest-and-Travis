@@ -243,8 +243,105 @@ TEST(RemoveStudent, DuplicateUsers) {
         delete studentsDB;
 }
 
-//  Tests fullRecord() awith valid parameters.
+//  Tests fullRecord() with valid parameters. Checks if the
+//  ids, phones, grades were indeed added.
 TEST(FullRecord, ValidParameters) {
+        Students* studentsDB = new Students();
+
+        //TODO: implement
+
+        delete studentsDB;
+}
+
+//  Tests fullRecord() with missing id, then missing grade,
+//  then missing name, then with missing phone.
+TEST(FullRecord, MissingParameters) {
+        Students* studentsDB = new Students();
+
+        //TODO: implement
+
+        delete studentsDB;
+}
+
+//  Tests fullRecord() with duplicate names. Check both the names
+//  have correct and different ids, phones, grades assigned.
+TEST(FullRecord, DuplicateNames) {
+        Students* studentsDB = new Students();
+
+        //TODO: implement
+
+        delete studentsDB;
+}
+
+//  Tests removing a student added using fullRecord().
+TEST(FullRecord, RemoveStudent) {
+        Students* studentsDB = new Students();
+
+        //TODO: implement
+
+        delete studentsDB;
+}
+
+//  Tests some students by using AddName() (with other required ad***),
+//  and some with fullRecord(). See if the list sizes, distinctiveness of
+//  the students, etc holds.
+TEST(FullRecord, DifferentWaysToAdd) {
+        Students* studentsDB = new Students();
+
+        //TODO: implement
+
+        delete studentsDB;
+}
+
+//  Tests removeList() with valid parameters.
+TEST(RemoveList, ValidParameters) {
+        Students* studentsDB = new Students();
+
+        //TODO: implement
+
+        delete studentsDB;
+}
+
+//  Tests removeList() where users were added using FullRecord().
+TEST(RemoveList, FullRecordAdds) {
+        Students* studentsDB = new Students();
+
+        //TODO: implement
+
+        delete studentsDB;
+}
+
+//  Tests removeList() where users were added using FullRecord() and
+//  AddUser().
+TEST(RemoveList, MixedAdds) {
+        Students* studentsDB = new Students();
+
+        //TODO: implement
+
+        delete studentsDB;
+}
+
+//  Tests clearAll() on one Student object
+TEST(ClearAll, OneObject) {
+        Students* studentsDB = new Students();
+
+        //TODO: implement
+
+        delete studentsDB;
+}
+
+//  Tests clearAll() when more than one Student objects are made.
+TEST(ClearAll, MultipleObjects) {
+        Students* studentsDB = new Students();
+
+        //TODO: implement
+
+        delete studentsDB;
+}
+
+//  Tests clearAll() when one object is referencing to other Student
+//  object. Both cleared?
+TEST(ClearAll, ReferenceObjects) {
         Students* studentsDB = new Students();
 
         //TODO: implement
