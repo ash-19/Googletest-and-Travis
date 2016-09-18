@@ -11,6 +11,8 @@
 //  with valid string name and valid unsigned int ID.
 //  Tests if names were indeed added to the map with a
 //  call to nameExists().
+//
+//  ALl tests should pass.
 TEST(AddUser, ValidParameters) {
         Students* studentsDB = new Students();
         studentsDB->addUser("Pikachu", 1);
@@ -19,5 +21,11 @@ TEST(AddUser, ValidParameters) {
         EXPECT_TRUE (studentsDB->nameExists("Pikachu"));
         EXPECT_TRUE (studentsDB->nameExists("Balbasaur"));
         EXPECT_TRUE (studentsDB->nameExists("Charmander"));
+
+        EXPECT_EQ (1, studentsDB->idForName("Pikachu"));
+        EXPECT_EQ (2, studentsDB->idForName("Balbasaur"));
+        EXPECT_EQ (3, studentsDB->idForName("Charmander"));
+
         EXPECT_FALSE(studentsDB->nameExists("Squirtel"));
+        delete studentsDB;
 }
