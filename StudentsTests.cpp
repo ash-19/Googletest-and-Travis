@@ -42,7 +42,6 @@ TEST(AddUser, NegativeID) {
         EXPECT_TRUE (studentsDB->nameExists("Pikachu"));
         EXPECT_EQ (4294967295, studentsDB->idForName("Pikachu")) <<
                 "-1 ID as an unsigned should be 4294967295. Type is signed int.";
-
         delete studentsDB;
 }
 
@@ -63,14 +62,19 @@ TEST(AddUser, DuplicateName) {
 //  All tests should pass.
 TEST(AddPhoneNumber, ValidParameters) {
         Students* studentsDB = new Students();
-
-        //TODO: implement
+        studentsDB->addUser("Pikachu", 1);
+        studentsDB->addUser("Squirtel", 2);
+        studentsDB->addPhoneNumbers(1, "000-000-0000");
+        studentsDB->addPhoneNumbers(2, "000-000-0001");
+        
+        EXPECT_EQ ("000-000-0000", studentsDB->phoneForName("Pikachu"));
+        EXPECT_EQ ("000-000-0001", studentsDB->phoneForName("Squirtel"));
 
         delete studentsDB;
 }
 
-//  Tests addPhoneNumber() with invalid id number (no user
-//  with that id number) and valid phone no.
+//  Tests addPhoneNumber() by adding a phone no to an un-associated id.
+//  Expected out_of_range exception.
 TEST(AddPhoneNumber, InvalidID) {
         Students* studentsDB = new Students();
 
@@ -79,11 +83,11 @@ TEST(AddPhoneNumber, InvalidID) {
         delete studentsDB;
 }
 
-//  Tests addPhoneNumber() with invalid phone number (incorrect format)
+//  Tests addPhoneNumber() with invalid phone number (empty string)
 //  and valid id.
 TEST(AddPhoneNumber, InvalidPhoneNumber) {
         Students* studentsDB = new Students();
-
+        
         //TODO: implement
 
         delete studentsDB;
