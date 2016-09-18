@@ -40,8 +40,8 @@ TEST(AddUser, NegativeID) {
         studentsDB->addUser("Pikachu", -1);
 
         EXPECT_TRUE (studentsDB->nameExists("Pikachu"));
-        EXPECT_FALSE ((studentsDB->idForName("Pikachu") == -1)) <<
-            "ID should not be -1. Change userID type to unsigned int.";
+        EXPECT_EQ (4294967295, studentsDB->idForName("Pikachu")) <<
+                "-1 ID as an unsigned should be 4294967295. Type is signed int.";
 
         delete studentsDB;
 }
