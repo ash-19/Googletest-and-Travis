@@ -356,3 +356,25 @@ TEST(ClearAll, ReferenceObjects) {
 
         delete studentsDB;
 }
+
+// Tests gradeForName() when the name is not in the records
+// Should throw out_of_range exception
+TEST(GradeForName, InvalidName) {
+        Students* studentsDB = new Students();
+        studentsDB->addUser("David", 1);
+    
+        ASSERT_THROW(studentsDB->gradeForName("Nick"), std::out_of_range);
+    
+        delete studentsDB;
+}
+
+// Tests gradeForName() when no grade is associated with the name
+// Should throw out_of_range exception
+TEST(GradeForName, InvalidGrade) {
+    Students* studentsDB = new Students();
+    studentsDB->addUser("David", 1);
+    
+    ASSERT_THROW(studentsDB->gradeForName("David"), std::out_of_range);
+    
+    delete studentsDB;
+}
