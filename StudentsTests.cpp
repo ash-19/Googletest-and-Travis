@@ -403,7 +403,7 @@ TEST(RemoveList, AllNamesInDB) {
         for(std::vector<std::string>::size_type i = 0; i != names.size(); i++) {
             studentsDB->addUser(names[i], i + 1);
             studentsDB->addGrade(i + 1, 'C');
-            studentsDB->addPhoneNumber(i + 1, "333-333-3333");
+            studentsDB->addPhoneNumbers(i + 1, "333-333-3333");
         }
         EXPECT_EQ(3, studentsDB->numberOfNames());
         studentsDB->removeList(names);
@@ -427,7 +427,7 @@ TEST(RemoveList, SomeNamesNotInDB) {
         for(std::vector<std::string>::size_type i = 0; i != names.size(); i++) {
             studentsDB->addUser(names[i], i + 1);
             studentsDB->addGrade(i + 1, 'C');
-            studentsDB->addPhoneNumber(i + 1, "333-333-3333");
+            studentsDB->addPhoneNumbers(i + 1, "333-333-3333");
         }
     
         names = {"David", "Sam", "Frank", "Luke"}; // Luke not in the DB
@@ -444,7 +444,7 @@ TEST(RemoveList, DeletedName) {
         for(std::vector<std::string>::size_type i = 0; i != names.size(); i++) {
             studentsDB->addUser(names[i], i + 1);
             studentsDB->addGrade(i + 1, 'C');
-            studentsDB->addPhoneNumber(i + 1, "333-333-3333");
+            studentsDB->addPhoneNumbers(i + 1, "333-333-3333");
         }
         studentsDB->.removeStudent("Sam");
         EXPECT_EQ(2, studentsDB->removeList(names));
