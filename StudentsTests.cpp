@@ -395,32 +395,32 @@ TEST(RemoveStudent, DuplicateUsers) {
 //         delete studentsDB;
 // }
 
-// //  Tests removeList() where all names passed are in DB
-// TEST(RemoveList, AllNamesInDB) {
-//         Students* studentsDB = new Students();
+//  Tests removeList() where all names passed are in DB
+TEST(RemoveList, AllNamesInDB) {
+        Students* studentsDB = new Students();
 
-//         //TODO: implement
+        //TODO: implement
 
-//         delete studentsDB;
-// }
+        delete studentsDB;
+}
 
-// //  Tests removeList() where some names passed are not in DB
-// TEST(RemoveList, SomeNamesNotInDB) {
-//         Students* studentsDB = new Students();
+//  Tests removeList() where some names passed are not in DB
+TEST(RemoveList, SomeNamesNotInDB) {
+        Students* studentsDB = new Students();
 
-//         //TODO: implement
+        //TODO: implement
 
-//         delete studentsDB;
-// }
+        delete studentsDB;
+}
 
-// //  Tests removeList() where a name was already deleted before calling removeList
-// TEST(RemoveList, DeletedName) {
-//         Students* studentsDB = new Students();
+//  Tests removeList() where a name was already deleted before calling removeList
+TEST(RemoveList, DeletedName) {
+        Students* studentsDB = new Students();
 
-//         //TODO: implement
+        //TODO: implement
 
-//         delete studentsDB;
-// }
+        delete studentsDB;
+}
 
 //  Tests clearAll() on one Student object
 TEST(ClearAll, OneObject) {
@@ -477,12 +477,12 @@ TEST(ClearAll, MultipleObjects) {
         delete studentsDB;
 }
 
-// //  Tests clearAll() when one object is referencing to other Student
-// //  object. Both cleared?
-// TEST(ClearAll, ReferenceObjects) {
-//         Students* studentsDB = new Students();
+//  Tests clearAll() when one object is referencing to other Student
+//  object. Both cleared?
+TEST(ClearAll, ReferenceObjects) {
+        Students* studentsDB = new Students();
 
-//         //TODO: implement
+        //TODO: implement
 
-//         delete studentsDB;
-// }
+        delete studentsDB;
+}
