@@ -111,8 +111,9 @@ TEST(AddPhoneNumber, DuplicateUser) {
 //  All tests should pass.
 TEST(AddGrade, ValidParameters) {
         Students* studentsDB = new Students();
-
-        //TODO: implement
+        studentsDB->addUser("David", 1);
+        studentsDB->addGrade(1, 'C');
+        EXPECT_EQ ('C', studentsDB->gradeForName("David"));
 
         delete studentsDB;
 }
