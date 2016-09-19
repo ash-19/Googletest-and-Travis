@@ -395,8 +395,8 @@ TEST(FullRecord, DifferentWaysToAdd) {
         delete studentsDB;
 }
 
-//  Tests removeList() with valid parameters.
-TEST(RemoveList, ValidParameters) {
+//  Tests removeList() where all names passed are in DB
+TEST(RemoveList, AllNamesInDB) {
         Students* studentsDB = new Students();
 
         //TODO: implement
@@ -404,8 +404,8 @@ TEST(RemoveList, ValidParameters) {
         delete studentsDB;
 }
 
-//  Tests removeList() where users were added using FullRecord().
-TEST(RemoveList, FullRecordAdds) {
+//  Tests removeList() where some names passed are not in DB
+TEST(RemoveList, SomeNamesNotInDB) {
         Students* studentsDB = new Students();
 
         //TODO: implement
@@ -413,9 +413,8 @@ TEST(RemoveList, FullRecordAdds) {
         delete studentsDB;
 }
 
-//  Tests removeList() where users were added using FullRecord() and
-//  AddUser().
-TEST(RemoveList, MixedAdds) {
+//  Tests removeList() where a name was already deleted before calling removeList
+TEST(RemoveList, DeletedName) {
         Students* studentsDB = new Students();
 
         //TODO: implement
@@ -486,26 +485,4 @@ TEST(ClearAll, ReferenceObjects) {
         //TODO: implement
 
         delete studentsDB;
-}
-
-// Tests gradeForName() when the name is not in the records
-// Should throw out_of_range exception
-TEST(GradeForName, InvalidName) {
-        Students* studentsDB = new Students();
-        studentsDB->addUser("David", 1);
-    
-        ASSERT_THROW(studentsDB->gradeForName("Nick"), std::out_of_range);
-    
-        delete studentsDB;
-}
-
-// Tests gradeForName() when no grade is associated with the name
-// Should throw out_of_range exception
-TEST(GradeForName, InvalidGrade) {
-    Students* studentsDB = new Students();
-    studentsDB->addUser("David", 1);
-    
-    ASSERT_THROW(studentsDB->gradeForName("David"), std::out_of_range);
-    
-    delete studentsDB;
 }
