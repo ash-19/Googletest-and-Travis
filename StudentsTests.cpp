@@ -333,8 +333,19 @@ TEST(RemoveList, MixedAdds) {
 TEST(ClearAll, OneObject) {
         Students* studentsDB = new Students();
 
-        //TODO: implement
-
+        studentsDB->addUser("David", 1);
+        studentsDB->addGrade(1, 'C');
+        studentsDB->addPhoneNumbers(1, "123-124-1234");
+        EXPECT_EQ (1, studentsDB->numberOfNames());
+    
+        studentsDB->clearAll();
+    
+        EXPECT_EQ (0, studentsDB->numberOfNames());
+        EXPECT_EQ (false, studentsDB->nameExists("David"));
+        ASSERT_THROW(studentsDB->idForName("David"), std::out_of_range);
+        ASSERT_THROW(studentsDB->gradeForName("David"), std::out_of_range);
+        ASSERT_THROW(studentsDB->phoneForName("David"), std::out_of_range);
+    
         delete studentsDB;
 }
 
