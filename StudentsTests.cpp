@@ -77,8 +77,9 @@ TEST(AddPhoneNumber, ValidParameters) {
 //  Expected out_of_range exception.
 TEST(AddPhoneNumber, InvalidID) {
         Students* studentsDB = new Students();
-
-        //TODO: implement
+        studentsDB->addUser("David", 1);
+    
+        ASSERT_THROW(studentsDB->addPhoneNumbers(2, "000-000-0000"), std::out_of_range);
 
         delete studentsDB;
 }
@@ -181,9 +182,10 @@ TEST(NumberOfNames, DuplicateUsers) {
 //  the number of users in map with call to numberOfNames().
 TEST(RemoveStudent, ValidParameters) {
         Students* studentsDB = new Students();
-
-        //TODO: implement
-
+        studentsDB->addUser("David", 1);
+        EXPECT_EQ (1, studentsDB->numberOfNames());
+        studentsDB->removeStudent("David");
+        EXPECT_EQ (0, studentsDB->numberOfNames());
         delete studentsDB;
 }
 
@@ -191,8 +193,9 @@ TEST(RemoveStudent, ValidParameters) {
 //  empty map.
 TEST(RemoveStudent, ExceptionEmptyMap) {
         Students* studentsDB = new Students();
-
-        //TODO: implement
+        EXPECT_EQ (0, studentsDB->numberOfNames());
+        studentsDB->removeStudent("David");
+        EXPECT_EQ (0, studentsDB->numberOfNames());
 
         delete studentsDB;
 }
@@ -201,8 +204,8 @@ TEST(RemoveStudent, ExceptionEmptyMap) {
 //  map. Should throw out_of_range exception
 TEST(RemoveStudent, ExceptionNoName) {
         Students* studentsDB = new Students();
-
-        //TODO: implement
+    
+        ASSERT_THROW(studentsDB->removeStudent("David"), std::out_of_range);
 
         delete studentsDB;
 }
