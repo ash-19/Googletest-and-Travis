@@ -446,7 +446,7 @@ TEST(RemoveList, DeletedName) {
             studentsDB->addGrade(i + 1, 'C');
             studentsDB->addPhoneNumbers(i + 1, "333-333-3333");
         }
-        studentsDB->.removeStudent("Sam");
+        studentsDB->removeStudent("Sam");
         EXPECT_EQ(2, studentsDB->removeList(names));
     
         delete studentsDB;
