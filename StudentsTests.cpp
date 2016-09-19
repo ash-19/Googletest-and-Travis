@@ -254,16 +254,17 @@ TEST(RemoveStudent, ValidParameters) {
         EXPECT_EQ (1, studentsDB->numberOfNames());
         studentsDB->removeStudent("David");
         EXPECT_EQ (0, studentsDB->numberOfNames());
+
+        EXPECT_FALSE(studentsDB->nameExists("David"));
         delete studentsDB;
 }
 
-//  Tests removeStudent() trying to remove a student from an
+//  Tests removeStudent() trying to remove a name from an
 //  empty map.
 TEST(RemoveStudent, ExceptionEmptyMap) {
         Students* studentsDB = new Students();
         EXPECT_EQ (0, studentsDB->numberOfNames());
-        studentsDB->removeStudent("David");
-        EXPECT_EQ (0, studentsDB->numberOfNames());
+        ASSERT_THROW(studentsDB->removeStudent(""), std::out_of_range);
 
         delete studentsDB;
 }
@@ -278,22 +279,20 @@ TEST(RemoveStudent, ExceptionNoName) {
         delete studentsDB;
 }
 
-//  Tests if the id was also removed after removing a student from
-//  the map.
-TEST(RemoveStudent, IdRemoved) {
-        Students* studentsDB = new Students();
-
-        //TODO: implement
-
-        delete studentsDB;
-}
-
 //  Tests if the phoneNumber was also removed after removing a student from
 //  the map.
 TEST(RemoveStudent, PhoneRemoved) {
         Students* studentsDB = new Students();
     
-        //TODO: implement
+        // Add name with id 1, its phone and then remove it
+        studentsDB->addUser("Pikachu", 1);
+        studentsDB->addPhoneNumbers(1, "000-000-0000");
+        studentsDB->removeStudent("Pikachu");
+        EXPECT_FALSE(studentsDB->nameExists("Pikachu"));
+
+        // Add a new name to the same id and ask for grade
+        studentsDB->addUser("Balbasaur", 1);
+        ASSERT_THROW(studentsDB->phoneForName("Balbasaur"), std::out_of_range);
 
         delete studentsDB;
 }
@@ -302,8 +301,16 @@ TEST(RemoveStudent, PhoneRemoved) {
 //  the map.
 TEST(RemoveStudent, GradeRemoved) {
         Students* studentsDB = new Students();
+        
+        // Add name with id 1, its grade and then remove it
+        studentsDB->addUser("Pikachu", 1);
+        studentsDB->addGrade(1, 'A');
+        studentsDB->removeStudent("Pikachu");
+        EXPECT_FALSE(studentsDB->nameExists("Pikachu"));
 
-        //TODO: implement
+        // Add a new name to the same id and ask for grade
+        studentsDB->addUser("Balbasaur", 1);
+        ASSERT_THROW(studentsDB->gradeForName("Balbasaur"), std::out_of_range);
 
         delete studentsDB;
 }
