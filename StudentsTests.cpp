@@ -398,9 +398,24 @@ TEST(RemoveStudent, DuplicateUsers) {
 //  Tests removeList() where all names passed are in DB
 TEST(RemoveList, AllNamesInDB) {
         Students* studentsDB = new Students();
-
-        //TODO: implement
-
+        std::vector<std::string> names = {"David", "Sam", "Frank"};
+    
+        for(std::vector<std::string>::size_type i = 0; i != names.size(); i++) {
+            studentsDB->addUser(names[i], i + 1);
+            studentsDB->addGrade(i + 1, 'C');
+            studentsDB->addPhoneNumber(i + 1, "333-333-3333");
+        }
+        EXPECT_EQ(3, studentsDB->numberOfNames());
+        studentsDB->removeList(names);
+        EXPECT_EQ(0, studentsDB->numberOfNames());
+    
+        for(std::vector<std::string>::size_type i = 0; i != names.size(); i++) {
+            EXPECT_FALSE(studentsDB->nameExists(names[i]));
+            ASSERT_THROW(studentsDB->idForName(names[i]), std::out_of_range);
+            ASSERT_THROW(studentsDB->phoneForName(names[i]), std::out_of_range);
+            ASSERT_THROW(studentsDB->gradeForName(names[i]), std::out_of_range);
+        }
+    
         delete studentsDB;
 }
 
