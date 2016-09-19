@@ -225,7 +225,7 @@ TEST(RemoveStudent, IdRemoved) {
 //  the map.
 TEST(RemoveStudent, PhoneRemoved) {
         Students* studentsDB = new Students();
-
+    
         //TODO: implement
 
         delete studentsDB;
@@ -352,8 +352,34 @@ TEST(ClearAll, OneObject) {
 //  Tests clearAll() when more than one Student objects are made.
 TEST(ClearAll, MultipleObjects) {
         Students* studentsDB = new Students();
-
-        //TODO: implement
+    
+        std::vector<int> names = {"David", "Sam", "Frank"};
+    
+        studentsDB->addUser(names[0], 1);
+        studentsDB->addGrade(1, 'C');
+        studentsDB->addPhoneNumbers(1, "123-124-1234");
+    
+        studentsDB->addUser(names[1], 2);
+        studentsDB->addGrade(2, 'B');
+        studentsDB->addPhoneNumbers(2, "123-124-1234");
+    
+        studentsDB->addUser(names[2], 3);
+        studentsDB->addGrade(3, 'A');
+        studentsDB->addPhoneNumbers(3, "123-124-1234");
+    
+        EXPECT_EQ (1, studentsDB->numberOfNames());
+        
+        studentsDB->clearAll();
+        
+        EXPECT_EQ (0, studentsDB->numberOfNames());
+    
+        // Test each name
+        for(std::vector<int>::size_type i = 0; i != names.size(); i++) {
+            EXPECT_EQ (false, studentsDB->nameExists(names[i]));
+            ASSERT_THROW(studentsDB->idForName(names[i]), std::out_of_range);
+            ASSERT_THROW(studentsDB->gradeForName(names[i]), std::out_of_range);
+            ASSERT_THROW(studentsDB->phoneForName(names[i]), std::out_of_range);
+        }
 
         delete studentsDB;
 }
