@@ -67,6 +67,8 @@ TEST(AddUser, DuplicateName) {
         delete studentsDB;
 }
 
+// TODO: test addUser() for two different users with same id.
+
 //  Tests addPhoneNumber() with valid id number and valid
 //  phone no. Tests if phone nos. were indeed
 //  added to the map with a call to phoneForName().
@@ -134,7 +136,7 @@ TEST(AddPhoneNumber, InvalidPhoneNumber) {
 TEST(AddPhoneNumber, DuplicateUser) {
         Students* studentsDB = new Students();
 
-        //TODO: implement
+        //TODO: implement. May change the phone number of the existing user..
 
         delete studentsDB;
 }
@@ -174,21 +176,22 @@ TEST(AddGrade, NoGradeForName) {
         delete studentsDB;
 }
 
-//  Tests addPhoneNumber() with invalid grade (incorrect format)
-//  and valid id.
-TEST(AddGrade, InvalidGrade) {
-        Students* studentsDB = new Students();
+// //  Tests addPhoneNumber() with invalid grade (incorrect format)
+// //  and valid id.
+// TEST(AddGrade, InvalidGrade) {
+//         Students* studentsDB = new Students();
+//         studentsDB->addUser("Pikachu", 1);
+        
+//         //TODO: implement
 
-        //TODO: implement
-
-        delete studentsDB;
-}
+//         delete studentsDB;
+// }
 
 //  Tests addGrades() for duplicate users. Should have different ids,
 //  phones, grades.
 TEST(AddGrade, DuplicateUsers) {
         Students* studentsDB = new Students();
-
+        
         //TODO: implement
 
         delete studentsDB;
@@ -198,8 +201,13 @@ TEST(AddGrade, DuplicateUsers) {
 //  the number of users in map with call to numberOfNames().
 TEST(NumberOfNames, ValidParameters) {
         Students* studentsDB = new Students();
+        studentsDB->addUser("Pikachu", 1);
+        studentsDB->addUser("Balbasaur", 2);
+        studentsDB->addUser("Squirtel", 3);
+        studentsDB->addUser("Charmander", 4);
 
-        //TODO: implement
+        size_t s = 4;
+        EXPECT_EQ(s, studentsDB->numberOfNames());
 
         delete studentsDB;
 }
@@ -208,8 +216,21 @@ TEST(NumberOfNames, ValidParameters) {
 //  some names.
 TEST(NumberOfNames, AddAndDelete) {
         Students* studentsDB = new Students();
+        studentsDB->addUser("Pikachu", 1);
+        studentsDB->addUser("Balbasaur", 2);
+        studentsDB->addUser("Squirtel", 3);
+        studentsDB->addUser("Charmander", 4);
+        size_t s = 4;
+        EXPECT_EQ(s, studentsDB->numberOfNames());
+        
+        studentsDB->removeStudent("Pikachu");
+        s = 3;
+        EXPECT_EQ(s, studentsDB->numberOfNames());
 
-        //TODO: implement
+        studentsDB->removeStudent("Squirtel");
+        studentsDB->removeStudent("Charmander");
+        s = 1;
+        EXPECT_EQ(s, studentsDB->numberOfNames());
 
         delete studentsDB;
 }
