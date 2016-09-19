@@ -329,9 +329,13 @@ TEST(RemoveStudent, DuplicateUsers) {
 //  ids, phones, grades were indeed added.
 TEST(FullRecord, ValidParameters) {
         Students* studentsDB = new Students();
-
-        //TODO: implement
-
+        
+        EXPECT_TRUE(studentsDB->fullRecord("Pikachu", 1, "000-000-0000", 'A'));
+        EXPECT_TRUE(studentsDB->nameExists("Pikachu"));
+        EXPECT_EQ(1, studentsDB->idForName("Pikachu"));
+        EXPECT_EQ('A', studentsDB->gradeForName("Pikachu"));
+        EXPECT_EQ("000-000-0000", studentsDB->phoneForName("Pikachu"));
+        
         delete studentsDB;
 }
 
@@ -359,7 +363,14 @@ TEST(FullRecord, DuplicateNames) {
 TEST(FullRecord, RemoveStudent) {
         Students* studentsDB = new Students();
 
-        //TODO: implement
+        EXPECT_TRUE(studentsDB->fullRecord("Pikachu", 1, "000-000-0000", 'A'));
+        studentsDB->removeStudent("Pikachu");
+        
+        EXPECT_FALSE(studentsDB->nameExists("Pikachu"));
+        ASSERT_THROW(studentsDB->gradeForName("Pikachu"), std::out_of_range);
+        ASSERT_THROW(studentsDB->phoneForName("Pikachu"), std::out_of_range);
+        ASSERT_THROW(studentsDB->idForName("Pikachu"), std::out_of_range);
+        EXPECT_EQ(0, studentsDB->numberOfNames());
 
         delete studentsDB;
 }
@@ -370,7 +381,16 @@ TEST(FullRecord, RemoveStudent) {
 TEST(FullRecord, DifferentWaysToAdd) {
         Students* studentsDB = new Students();
 
-        //TODO: implement
+        EXPECT_TRUE(studentsDB->fullRecord("Pikachu", 1, "000-000-0000", 'A'));
+        studentsDB->addUser("Balbasaur", 2);
+        
+        EXPECT_EQ(2, studentsDB->numberOfNames());
+
+        studentsDB->removeStudent("Pikachu");
+        EXPECT_EQ(1, studentsDB->numberOfNames());
+        
+        studentsDB->removeStudent("Balbasaur");
+        EXPECT_EQ(0, studentsDB->numberOfNames());
 
         delete studentsDB;
 }
