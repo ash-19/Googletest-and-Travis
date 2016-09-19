@@ -39,6 +39,18 @@ TEST(AddUser, NegativeID) {
         Students* studentsDB = new Students();
         studentsDB->addUser("Pikachu", -1);
 
+        ASSERT_THROW(studentsDB->idForName("Squirtel"), std::out_of_range);
+        delete studentsDB;
+}
+
+//  Tests addUser() by calling idForName() for a name that's
+//  not in the DB.
+//
+//  Expected out_of_range
+TEST(AddUser, NameNotInRecords) {
+        Students* studentsDB = new Students();
+        studentsDB->addUser("Pikachu", 1);
+
         EXPECT_TRUE (studentsDB->nameExists("Pikachu"));
         EXPECT_EQ (4294967295, studentsDB->idForName("Pikachu")) <<
                 "-1 ID as an unsigned should be 4294967295. Type is signed int.";
@@ -50,7 +62,7 @@ TEST(AddUser, NegativeID) {
 TEST(AddUser, DuplicateName) {
         Students* studentsDB = new Students();
 
-        //TODO: implement
+        //TODO: implement. MAP ONLY ALLOWS UNIQUE KEYS..
 
         delete studentsDB;
 }
@@ -73,14 +85,29 @@ TEST(AddPhoneNumber, ValidParameters) {
         delete studentsDB;
 }
 
-//  Tests addPhoneNumber() by adding a phone no to an un-associated id.
+//  Tests addPhoneNumber() by calling phoneForName on a student 
+//  without phone number.
 //  Expected out_of_range exception.
-TEST(AddPhoneNumber, InvalidID) {
+TEST(AddPhoneNumber, NoPhoneForName) {
         Students* studentsDB = new Students();
         studentsDB->addUser("David", 1);
-    
-        ASSERT_THROW(studentsDB->addPhoneNumbers(2, "000-000-0000"), std::out_of_range);
+        studentsDB->addPhoneNumbers(2, "000-000-0000");
 
+        ASSERT_THROW(studentsDB->phoneForName("David"), std::out_of_range);
+        
+        delete studentsDB;
+}
+
+//  Tests addPhoneNumber() by calling phoneForName on a student 
+//  not in the DB.
+//  Expected out_of_range exception.
+TEST(AddPhoneNumber, NoNameInDB) {
+        Students* studentsDB = new Students();
+        studentsDB->addUser("David", 1);
+        studentsDB->addPhoneNumbers(2, "000-000-0000");
+        
+        ASSERT_THROW(studentsDB->phoneForName("Pikachu"), std::out_of_range);
+        
         delete studentsDB;
 }
 
@@ -88,8 +115,16 @@ TEST(AddPhoneNumber, InvalidID) {
 //  and valid id.
 TEST(AddPhoneNumber, InvalidPhoneNumber) {
         Students* studentsDB = new Students();
-        
-        //TODO: implement
+        studentsDB->addUser("Pikachu", 1);
+        studentsDB->addUser("Squirtel", 2);
+
+        // empty phone number, invalid format
+        studentsDB->addPhoneNumbers(1, "");
+        studentsDB->addPhoneNumbers(2, "801585-1726");
+
+        //TODO: test in runtime what outputs and then decide the behavior
+        EXPECT_EQ("", studentsDB->phoneForName("Pikachu"));
+        EXPECT_EQ("801585-1726", studentsDB->phoneForName("Squirtel"));
 
         delete studentsDB;
 }
@@ -118,12 +153,23 @@ TEST(AddGrade, ValidParameters) {
         delete studentsDB;
 }
 
-//  Tests addGrade() with invalid id number (no user
-//  with that id number) and valid grade.
-TEST(AddGrade, InvalidID) {
+//  Tests addGrade() for a user not in DB.
+TEST(AddGrade, NoNameInDB) {
         Students* studentsDB = new Students();
+        studentsDB->addUser("Pikachu", 1);
+        studentsDB->addGrade(2, 'A');
+        
+        ASSERT_THROW(studentsDB->gradeForName("Squirtel"), std::out_of_range);
 
-        //TODO: implement
+        delete studentsDB;
+}
+
+//  Tests addGrade() for a user without a grade
+TEST(AddGrade, NoGradeForName) {
+        Students* studentsDB = new Students();
+        studentsDB->addUser("Pikachu", 1);
+        
+        ASSERT_THROW(studentsDB->gradeForName("Pikachu"), std::out_of_range);
 
         delete studentsDB;
 }
