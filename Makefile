@@ -13,14 +13,16 @@ CFLAGS = -Wall -std=c++11
 GOOGLETEST = ../googletest/googletest
 
 # makes the final executable
-StudentsTests: Students.o
-	$(CXX) -o StudentTests $(CFLAGS) Students.o StudentsTests.cpp -L$(GOOGLETEST) -lgtest -lgtest_main -lpthread
+StudentsTests: Students.o StudentsTests.o
+	$(CXX) $(CFLAGS) -o StudentsTests StudentsTests.o Students.o -L$(GOOGLETEST) -lgtest -lgtest_main -lpthread
+
+StudentsTests.o: $(GOOGLETEST)/include/ StudentsTests.cpp Students.h
+	$(CXX) $(CFLAGS) -c -I$(GOOGLETEST)/include/ StudentsTests.cpp
 
 # Removes all the .o object files and any executable files
 clean:
-	$(RM) count *.o *~ StudentsTests
+	$(RM) count StudentsTests.o *~ StudentsTests
 
 # test executable
-test:
-	make StudentsTests
+test: StudentsTests
 	./StudentsTests
