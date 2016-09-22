@@ -3,8 +3,8 @@
 # Makefile for A4
 
 # Use g++4.8 compiler on travis
-# CXX ?= g++-4.8
-CXX = g++
+CXX ?= g++-4.8
+#CXX = g++
 
 # Compiler flags
 CFLAGS = -Wall -std=c++11
