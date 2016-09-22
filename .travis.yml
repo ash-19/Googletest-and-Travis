@@ -36,6 +36,8 @@ install:
     - make
     - cd -
     - pwd
+    - ls .
+    - ls ./gtest
     
     
 script:
