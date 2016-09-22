@@ -48,5 +48,5 @@ install:
     
     
 script:
-    - make
+    - make GOOGLETEST=../../../gtest
     - ./StudentsTests
