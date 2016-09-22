@@ -21,7 +21,7 @@ install:
     - export LIBRARY_PATH=$(pwd)
     - ls
     - pwd
-    - cp -r /usr/src/gtest/* ./
+    - cp -r /home/travis/gtest/* ./
     - ls
     - cmake -D CMAKE_INSTALL_PREFIX:PATH=./ ./
     - ls
