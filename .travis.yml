@@ -41,6 +41,9 @@ install:
     - ls ../../
     - ls ../../../
     - ls ../../../gtest/
+    - ls ../../../build/
+    - ls ../../../builds/
+    - ls ../../../gtest/src/
     - ls ../../../../
     
     
