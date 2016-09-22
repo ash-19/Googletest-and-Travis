@@ -32,9 +32,8 @@ install:
     - export LIBRARY_PATH=$(pwd)
     - cp -r /usr/src/gtest/* ./
     - pwd
-    - cmake -D CMAKE_INSTALL_PREFIX:PATH=./ ./
-    - make clean
-    - make all
+    - cmake -D CMAKE_INSTALL_PREFIX:PATH=./ ./ CMakeLists.txt
+    - make
     - cd -
     - pwd
     - ls .
