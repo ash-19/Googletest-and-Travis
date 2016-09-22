@@ -37,7 +37,10 @@ install:
     - cd -
     - pwd
     - ls .
-    - ls ./gtest
+    - ls ../
+    - ls ../../
+    - ls ../../../
+    - ls ../../../../
     
     
 script:
