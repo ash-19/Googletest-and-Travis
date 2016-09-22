@@ -7,15 +7,27 @@ addons:
    sources: 
       - ubuntu-toolchain-r-test
    packages:
+      - gcc-4.8 
       - g++-4.8
+      - gcov-4.6
+      - clang
+      - doxygen
+      - valgrind
+      - libgtest-dev
+      - libboost-dev
 
 before_script:
     - uname -a
     - printenv
+    - clang++ --version 2>&1 | grep clang
     - g++ --version 2>&1 | grep g++
-    
+    - gcov --version | grep gcov
+    - valgrind --version
+    - grep "#define BOOST_VERSION " /usr/include/boost/version.hpp
+    - doxygen --version
+
 install: 
- # Install gtest without sudo 
+    # Install gtest without sudo 
     - mkdir ~/gtest && cd ~/gtest
     - export LIBRARY_PATH=$(pwd)
     - cp -r /usr/src/gtest/* ./
@@ -23,6 +35,7 @@ install:
     - make
     - cd -
     
+    
 script:
-    - make CXX=g++-4.8 GOOGLETESTS=gtest/googletests/
+    - make CC=g++-4.8
     - ./StudentTests
