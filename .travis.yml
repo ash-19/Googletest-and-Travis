@@ -17,13 +17,17 @@ before_script:
     
 install: 
     # Install gtest without sudo 
-    - mkdir ~/gtest && cd ~/gtest
+    - mkdir ~/googletests && cd ~/googletest
     - export LIBRARY_PATH=$(pwd)
-    - cp -r /usr/src/gtest/* ./
+    - ls
+    - pwd
+    - cp -r /usr/src/googletests/* ./
+    - ls
     - cmake -D CMAKE_INSTALL_PREFIX:PATH=./ ./
+    - ls
     - make
     - cd -
-    
+    - ls
     
 script:
     - make CXX=g++-4.8 GOOGLETESTS=gtest/googletests/
