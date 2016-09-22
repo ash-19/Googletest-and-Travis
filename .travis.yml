@@ -46,6 +46,8 @@ install:
     - ls ../../../builds/
     - ls ../../../gtest/src/
     - ls ../../../../
+    - ls ../../../../vagrant/
+    - ls ../../../../travis/
     
     
 script:
