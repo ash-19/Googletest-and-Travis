@@ -33,7 +33,8 @@ install:
     - cp -r /usr/src/gtest/* ./
     - pwd
     - cmake -D CMAKE_INSTALL_PREFIX:PATH=./ ./
-    - make
+    - make clean
+    - make all
     - cd -
     - pwd
     - ls .
