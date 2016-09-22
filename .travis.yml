@@ -18,7 +18,6 @@ install:
  # Install gtest without sudo 
     - mkdir ~/gtest && cd ~/gtest
     - export LIBRARY_PATH=$(pwd)
-    - ls gtest/
     - cp -r /usr/src/gtest/* ./
     - cmake -D CMAKE_INSTALL_PREFIX:PATH=./ ./
     - make
