@@ -1,5 +1,5 @@
 language: cpp
-compiler: gcc
+compiler: g++
 sudo: false
 
 addons:
@@ -7,7 +7,6 @@ addons:
    sources: 
       - ubuntu-toolchain-r-test
    packages:
-      - gcc-4.8 
       - g++-4.8
 
 before_script:
@@ -16,18 +15,14 @@ before_script:
     - g++ --version 2>&1 | grep g++
     
 install: 
-    # Install gtest without sudo 
+ # Install gtest without sudo 
     - mkdir ~/gtest && cd ~/gtest
     - export LIBRARY_PATH=$(pwd)
-    - ls
-    - pwd
-    - cp -r /home/travis/gtest/* ./
-    - ls
+    - ls gtest/
+    - cp -r /usr/src/gtest/* ./
     - cmake -D CMAKE_INSTALL_PREFIX:PATH=./ ./
-    - ls
     - make
     - cd -
-    - ls
     
 script:
     - make CXX=g++-4.8 GOOGLETESTS=gtest/googletests/
