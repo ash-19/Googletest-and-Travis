@@ -13,7 +13,6 @@ addons:
       - clang
       - doxygen
       - valgrind
-      - libgtest-dev
       - libboost-dev
 
 before_script:
@@ -44,15 +43,6 @@ install:
     - ls ../
     - ls ../../
     - ls ../../../
-    - ls ../../../gtest/
-    - ls ../../../gtest/include/
-    - ls ../../../gtest/include/gtest/
-    - ls ../../../build/
-    - ls ../../../builds/
-    - ls ../../../gtest/src/
-    - ls ../../../../
-    - ls ../../../../vagrant/
-    - ls ../../../../travis/
     - wget https://github.com/google/googletest/archive/master.zip
     - unzip master.zip 
     - cd googletest-master/googletest/
