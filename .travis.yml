@@ -29,7 +29,8 @@ before_script:
 install: 
     # Install gtest without sudo 
     - mkdir ~/gtest && mkdir ~/gtest/include && cd ~/gtest
-    - export CPLUS_INCLUDE_PATH=$(pwd)/include:$CPLUS_INCLUDE_PATH
+    - cp -r include/gtest ~/gtest/include
+    - export CPLUS_INCLUDE_PATH=$(pwd)/include
     - export LIBRARY_PATH=$(pwd)
     - ls .
     - cp -r /usr/src/gtest/* ./
@@ -46,7 +47,6 @@ install:
     - ls ../../../
     - ls ../../../gtest/
     - ls ../../../gtest/include/
-    - ls ../../../gtest/include/gtest/
     - ls ../../../build/
     - ls ../../../builds/
     - ls ../../../gtest/src/
