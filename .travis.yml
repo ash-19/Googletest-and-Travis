@@ -32,11 +32,11 @@ install:
     - export CPLUS_INCLUDE_PATH=$(pwd)/include:$CPLUS_INCLUDE_PATH
     - export LIBRARY_PATH=$(pwd)
     - ls .
-    - ls ./include/
     - cp -r /usr/src/gtest/* ./
     # cp -r /usr/src/gtest/* ./
     - pwd
     - ls .
+    - ls ./include/
     - cmake -D CMAKE_INSTALL_PREFIX:PATH=./ ./ CMakeLists.txt
     - make
     - cd -
@@ -45,6 +45,7 @@ install:
     - ls ../
     - ls ../../
     - ls ../../../
+    - ls ../../../gtest/
     
 script:
     - make GOOGLETEST=../../../gtest
