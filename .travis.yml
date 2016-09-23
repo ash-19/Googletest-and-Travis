@@ -1,54 +1,39 @@
 language: cpp
+install: true
 compiler: gcc
-sudo: false
 
 addons:
-  apt: 
-   sources: 
-      - ubuntu-toolchain-r-test
-   packages:
-      - gcc-4.8 
-      - g++-4.8
-      - gcov-4.6
-      - clang
-      - doxygen
-      - valgrind
-      - libgtest-dev
-      - libboost-dev
-
-before_script:
-    - uname -a
-    - printenv
-    - clang++ --version 2>&1 | grep clang
-    - g++ --version 2>&1 | grep g++
-    - gcov --version | grep gcov
-    - valgrind --version
-    - grep "#define BOOST_VERSION " /usr/include/boost/version.hpp
-    - doxygen --version
-
-install: 
-    # Install gtest without sudo 
-    - mkdir ~/gtest && mkdir ~/gtest/include && cd ~/gtest
-    - export CPLUS_INCLUDE_PATH=$(pwd)/include:$CPLUS_INCLUDE_PATH
-    - export LIBRARY_PATH=$(pwd)
-    - ls .
-    - ls /usr/src/gtest/
-    - cp -r /usr/src/gtest/* ./
-    # cp -r /usr/src/gtest/* ./
-    - pwd
-    - ls .
-    - ls ./include/
-    - cmake -D CMAKE_INSTALL_PREFIX:PATH=./ ./ CMakeLists.txt
-    - make
-    - cd -
-    - pwd
-    - ls .
-    - ls ../
-    - ls ../../
-    - ls ../../../
-    - ls ../../../gtest/
-    - ls ../../../gtest/include/
-    
+  apt:
+    packages:
+    - g++-4.8
+    - gcc-4.8
+    sources:
+    - ubuntu-toolchain-r-test
+  
+before_install:
+  - sudo apt-get update
+  - sudo apt-get install -y g++-4.8; export CXX="g++-4.8";
+  # make CC=gcc-4.8 CXX=g++-4.8 && make install
+  - wget https://github.com/google/googletest/archive/master.zip
+  - unzip master.zip 
+  - cd googletest-master/googletest/
+  - ls . -a
+  # ./configure --prefix=$TRAVIS_BUILD_DIR --with-pthreads=no
+  - cmake .
+  - make clean
+  - make all
+  - mv /home/travis/build/University-of-Utah-CS3505/cs3505-a4-googletest-nick-ash/googletest-master /home/travis/build/
+  - ls . -a
+  - ls ./include/ -a
+  - pwd
+  - ls ../
+  - ls ../../
+  - ls ../../googletest-master/googletest/ -a
+  - cd /home/travis/build/University-of-Utah-CS3505/cs3505-a4-googletest-nick-ash/
+  - pwd
+  - ls -a
+  
 script:
-    - make GOOGLETEST=../../../gtest
-    - ./StudentsTests
+  - make install
+  # make CC=gcc-4.8 CXX=g++-4.8 && make install
+  # make test GOOGLETEST=../../googletest-master/googletest/
