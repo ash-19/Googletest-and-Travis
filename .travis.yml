@@ -1,4 +1,7 @@
 language: cpp
+install: true
+compiler: g++
+script: make && make test
 
 addons:
   apt:
@@ -7,9 +10,6 @@ addons:
     - gcc-4.8
     sources:
     - ubuntu-toolchain-r-test
-
-before_script:
-  - g++ --version 2>&1 | grep g++
   
 before_install:
   # make CC=gcc-4.8 CXX=g++-4.8 && make install
@@ -33,5 +33,5 @@ before_install:
   - ls -a
   
 script:
-  # make CC=gcc-4.8 CXX=g++-4.8 && make install
+  - make CC=gcc-4.8 CXX=g++-4.8 && make install
   - make test GOOGLETEST=../../googletest-master/googletest/
