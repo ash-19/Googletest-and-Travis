@@ -31,6 +31,18 @@ TEST(AddUser, ValidParameters) {
         delete studentsDB;
 }
 
+//  Tests addUser() by calling idForName() for a name that's
+//  not in the DB.
+//
+//  Expected out_of_range
+TEST(AddUser, NameNotInRecords) {
+        Students* studentsDB = new Students();
+        studentsDB->addUser("Pikachu", 1);
+
+        ASSERT_THROW(studentsDB->idForName("Squirtel"), std::out_of_range);
+        delete studentsDB;
+}
+
 //  Tests addUser() with valid string name and
 //  invalid ID (negative int). Tests if names and ids were indeed
 //  added to the map with a call to nameExists() and idForName().
@@ -38,18 +50,6 @@ TEST(AddUser, ValidParameters) {
 //  ID should not be -1. But is -1. Therefore, type of id used
 //  is int and not unsigned int.
 TEST(AddUser, NegativeID) {
-        Students* studentsDB = new Students();
-        studentsDB->addUser("Pikachu", -1);
-
-        ASSERT_THROW(studentsDB->idForName("Squirtel"), std::out_of_range);
-        delete studentsDB;
-}
-
-//  Tests addUser() by calling idForName() for a name that's
-//  not in the DB.
-//
-//  Expected out_of_range
-TEST(AddUser, NameNotInRecords) {
         Students* studentsDB = new Students();
         studentsDB->addUser("Pikachu", 1);
 
@@ -59,18 +59,19 @@ TEST(AddUser, NameNotInRecords) {
         delete studentsDB;
 }
 
-//  Tests addUser() for duplicates names. Both names should
-//  be in the map but with different ids.
-TEST(AddUser, DuplicateName) {
+//  The DB design should allow for duplicate names (since people have 
+//  same names in real world), when id's are different.
+TEST(AddUser, DuplicateNames) {
         Students* studentsDB = new Students();
-        studentsDB->addUser("David", 1);
-        studentsDB->addUser("Nick", 2);
-        EXPECT_EQ (2, studentsDB->numberOfNames());
+        studentsDB->addUser("Pikachu", 1);
+        studentsDB->addUser("Pikachu", 2);
+        
+        if(studentsDB->numberOfNames() == 1) {
+                FAIL();
+        }
 
         delete studentsDB;
 }
-
-// TODO: test addUser() for two different users with same id.
 
 //  Tests addPhoneNumber() with valid id number and valid
 //  phone no. Tests if phone nos. were indeed
@@ -127,9 +128,13 @@ TEST(AddPhoneNumber, InvalidPhoneNumber) {
         studentsDB->addPhoneNumbers(1, "");
         studentsDB->addPhoneNumbers(2, "801585-1726");
 
-        //TODO: test in runtime what outputs and then decide the behavior
-        EXPECT_EQ("", studentsDB->phoneForName("Pikachu"));
-        EXPECT_EQ("801585-1726", studentsDB->phoneForName("Squirtel"));
+        // Should adhere to the phone number format ###-###-####
+        if(studentsDB->phoneForName("Pikachu") == "" ) {
+                FAIL() << "Incorrect Phone number format - Empty string";
+        }
+        if(studentsDB->phoneForName("Squirtel") == "801585-1726") {
+                FAIL() << "Incorrect phone number format - ######-####";
+        }
 
         delete studentsDB;
 }
@@ -146,7 +151,7 @@ TEST(AddPhoneNumber, NamesWithSameID) {
         EXPECT_EQ("100-100-1002", studentsDB->phoneForName("Pikachu"));
 
         if(studentsDB->phoneForName("David") == "100-100-1002") {
-                FAIL();
+                FAIL() << "Replaced the phone number of different user";
         }
 
         delete studentsDB;
@@ -248,7 +253,9 @@ TEST(NumberOfNames, DuplicateUsers) {
         studentsDB->addUser("David", 1);
         studentsDB->addUser("David", 2);
         studentsDB->addUser("David", 3);
-        EXPECT_EQ(1, studentsDB->numberOfNames());
+        if( studentsDB->numberOfNames() == 1) {
+                FAIL() << "Threr are 3 distinct students with different id's. But only 1 in DB.";
+        }
 
         delete studentsDB;
 }
@@ -289,7 +296,7 @@ TEST(RemoveStudent, ExceptionNoName) {
 
 //  Tests if all the info was also removed after removing a student from
 //  the map.
-TEST(RemoveStudent, PhoneRemoved) {
+TEST(RemoveStudent, PhoneRemovedOrNot) {
         Students* studentsDB = new Students();
     
         // Add name with id 1, its phone and then remove it
@@ -306,7 +313,7 @@ TEST(RemoveStudent, PhoneRemoved) {
 
 //  Tests if the grade was also removed after removing a student from
 //  the map.
-TEST(RemoveStudent, GradeRemoved) {
+TEST(RemoveStudent, GradeRemovedOrNot) {
         Students* studentsDB = new Students();
         
         // Add name with id 1, its grade and then remove it
@@ -316,14 +323,13 @@ TEST(RemoveStudent, GradeRemoved) {
         EXPECT_FALSE(studentsDB->nameExists("Pikachu"));
 
         ASSERT_THROW(studentsDB->gradeForName("Pikachu"), std::out_of_range);
-        ASSERT_THROW(studentsDB->idForName("Pikachu"), std::out_of_range);
 
         delete studentsDB;
 }
 
 //  Tests if the id was also removed after removing a student from
 //  the map.
-TEST(RemoveStudent, IDRemoved) {
+TEST(RemoveStudent, IDRemovedOrNot) {
         Students* studentsDB = new Students();
         
         // Add name with id 1, its grade and then remove it
@@ -337,75 +343,95 @@ TEST(RemoveStudent, IDRemoved) {
         delete studentsDB;
 }
 
-// //  Tests fullRecord() with valid parameters. Checks if the
-// //  ids, phones, grades were indeed added.
-// TEST(FullRecord, ValidParameters) {
-//         Students* studentsDB = new Students();
+//  Tests fullRecord() for a name not in DB.
+TEST(FullRecord, NameNotInDB) {
+        Students* studentsDB = new Students();
+        unsigned int id;
+        char grade;
+        std::string phone;
+
+        EXPECT_FALSE( studentsDB->fullRecord("Pikachu", id, phone, grade));
+
+        delete studentsDB;
+}
+
+//  Tests fullRecord() for a name in DB.
+TEST(FullRecord, NameInDB) {
+        Students* studentsDB = new Students();
+        unsigned int id;
+        char grade;
+        std::string phone;
+
+        studentsDB->addUser("Pikachu", 1);
+        studentsDB->addGrade(1, 'A');
+        studentsDB->addPhoneNumbers(1, "000-000-0000");
+
+        EXPECT_TRUE( studentsDB->fullRecord("Pikachu", id, phone, grade));
+
+        delete studentsDB;
+}
+
+//  Tests fullRecord() with valid parameters. Checks if the
+//  ids, phones, grades were indeed assigned to ref parameters 
+//  correctly.
+TEST(FullRecord, OneStudentDetails) {
+        Students* studentsDB = new Students();
+        unsigned int id;
+        char grade;
+        std::string phone;
+
+        EXPECT_FALSE( studentsDB->fullRecord("Pikachu", id, phone, grade));
+
+        studentsDB->addUser("Pikachu", 1);
+        studentsDB->addGrade(1, 'A');
+        studentsDB->addPhoneNumbers(1, "000-000-0000");
+         
+        EXPECT_TRUE( studentsDB->fullRecord("Pikachu", id, phone, grade));
+
+        EXPECT_EQ(1, id) << "Assigning the grade to id";
+        EXPECT_EQ('A', grade) << "Assigning some random char to grade";
+        EXPECT_EQ("000-000-0000", phone);
         
-//         EXPECT_TRUE(studentsDB->fullRecord("Pikachu", 1, "000-000-0000", 'A'));
-//         EXPECT_TRUE(studentsDB->nameExists("Pikachu"));
-//         EXPECT_EQ(1, studentsDB->idForName("Pikachu"));
-//         EXPECT_EQ('A', studentsDB->gradeForName("Pikachu"));
-//         EXPECT_EQ("000-000-0000", studentsDB->phoneForName("Pikachu"));
+        delete studentsDB;
+}
+
+//  Tests fullRecord() with valid parameters for 2 students. 
+//  Checks if the ids, phones, grades were indeed assigned to 
+//  ref parameters correctly.
+TEST(FullRecord, TwoStudentsDetails) {
+        Students* studentsDB = new Students();
+        unsigned int id;
+        char grade;
+        std::string phone;
+
+        studentsDB->addUser("Pikachu", 1);
+        studentsDB->addUser("Balbasaur", 2);
+
+        EXPECT_FALSE( studentsDB->fullRecord("Pikachu", id, phone, grade));
+        EXPECT_FALSE( studentsDB->fullRecord("Balbasaur", id, phone, grade));
+
+        studentsDB->addUser("Pikachu", 1);
+        studentsDB->addGrade(1, 'A');
+        studentsDB->addPhoneNumbers(1, "000-000-0000");
+
+        studentsDB->addUser("Balbasaur", 2);
+        studentsDB->addGrade(2, 'B');
+        studentsDB->addPhoneNumbers(2, "000-000-0001");
+         
+        EXPECT_TRUE( studentsDB->fullRecord("Pikachu", id, phone, grade));
+
+        EXPECT_EQ(1, id) << "Assigning the grade to id" ;
+        EXPECT_EQ('A', grade) << "Assigning some random char to grade";
+        EXPECT_EQ("000-000-0000", phone);
+
+        EXPECT_TRUE( studentsDB->fullRecord("Balbasaur", id, phone, grade));
+
+        EXPECT_EQ(2, id) << "Assigning the grade to id" ;
+        EXPECT_EQ('B', grade) << "Assigning some random char to grade";
+        EXPECT_EQ("000-000-0001", phone);
         
-//         delete studentsDB;
-// }
-
-// //  Tests fullRecord() with missing id, then missing grade,
-// //  then missing name, then with missing phone.
-// TEST(FullRecord, MissingParameters) {
-//         Students* studentsDB = new Students();
-
-//         //TODO: implement
-
-//         delete studentsDB;
-// }
-
-// //  Tests fullRecord() with duplicate names. Check both the names
-// //  have correct and different ids, phones, grades assigned.
-// TEST(FullRecord, DuplicateNames) {
-//         Students* studentsDB = new Students();
-
-//         //TODO: implement
-
-//         delete studentsDB;
-// }
-
-// //  Tests removing a student added using fullRecord().
-// TEST(FullRecord, RemoveStudent) {
-//         Students* studentsDB = new Students();
-
-//         EXPECT_TRUE(studentsDB->fullRecord("Pikachu", 1, "000-000-0000", 'A'));
-//         studentsDB->removeStudent("Pikachu");
-        
-//         EXPECT_FALSE(studentsDB->nameExists("Pikachu"));
-//         ASSERT_THROW(studentsDB->gradeForName("Pikachu"), std::out_of_range);
-//         ASSERT_THROW(studentsDB->phoneForName("Pikachu"), std::out_of_range);
-//         ASSERT_THROW(studentsDB->idForName("Pikachu"), std::out_of_range);
-//         EXPECT_EQ(0, studentsDB->numberOfNames());
-
-//         delete studentsDB;
-// }
-
-// //  Tests some students by using AddName() (with other required ad***),
-// //  and some with fullRecord(). See if the list sizes, distinctiveness of
-// //  the students, etc holds.
-// TEST(FullRecord, DifferentWaysToAdd) {
-//         Students* studentsDB = new Students();
-
-//         EXPECT_TRUE(studentsDB->fullRecord("Pikachu", 1, "000-000-0000", 'A'));
-//         studentsDB->addUser("Balbasaur", 2);
-        
-//         EXPECT_EQ(2, studentsDB->numberOfNames());
-
-//         studentsDB->removeStudent("Pikachu");
-//         EXPECT_EQ(1, studentsDB->numberOfNames());
-        
-//         studentsDB->removeStudent("Balbasaur");
-//         EXPECT_EQ(0, studentsDB->numberOfNames());
-
-//         delete studentsDB;
-// }
+        delete studentsDB;
+}
 
 //  Tests removeList() where all names passed are in DB
 TEST(RemoveList, AllNamesInDB) {
@@ -460,7 +486,7 @@ TEST(RemoveList, DeletedName) {
         }
         studentsDB->removeStudent("Sam");
         names = {"Sam"};
-        EXPECT_EQ(0, studentsDB->removeList(names));            //TODO: should not throw exception
+        EXPECT_EQ(0, studentsDB->removeList(names));
     
         delete studentsDB;
 }
@@ -510,7 +536,7 @@ TEST(ClearAll, MultipleObjects) {
         studentsDB->addGrade(3, 'A');
         studentsDB->addPhoneNumbers(3, "123-124-1234");
     
-        EXPECT_EQ (1, studentsDB->numberOfNames());
+        EXPECT_EQ (3, studentsDB->numberOfNames());
         
         studentsDB->clearAll();
         
@@ -554,8 +580,8 @@ TEST(ClearAll, ReferenceObjects) {
         studentsDB->addGrade(3, 'A');
         studentsDB->addPhoneNumbers(3, "123-124-1234");
     
-        EXPECT_EQ (1, studentsDB->numberOfNames());
-        EXPECT_EQ (1, studentsDB1->numberOfNames());
+        EXPECT_EQ (3, studentsDB->numberOfNames());
+        EXPECT_EQ (3, studentsDB1->numberOfNames());
         studentsDB->clearAll();
         
         EXPECT_EQ (0, studentsDB->numberOfNames());
