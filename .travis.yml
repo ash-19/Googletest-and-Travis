@@ -13,6 +13,7 @@ addons:
       - clang
       - doxygen
       - valgrind
+      - libgtest-dev
       - libboost-dev
 
 before_script:
