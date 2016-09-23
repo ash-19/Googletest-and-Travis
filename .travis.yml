@@ -1,8 +1,8 @@
 language: cpp
 install: true
 compiler: g++
-script: make && make test
 
+script: make CC=gcc-4.8 CXX=g++-4.8 && make install
 addons:
   apt:
     packages:
@@ -32,6 +32,6 @@ before_install:
   - pwd
   - ls -a
   
-script:
-  - make CC=gcc-4.8 CXX=g++-4.8 && make install
-  - make test GOOGLETEST=../../googletest-master/googletest/
+#script:
+  # make CC=gcc-4.8 CXX=g++-4.8 && make install
+  # make test GOOGLETEST=../../googletest-master/googletest/
