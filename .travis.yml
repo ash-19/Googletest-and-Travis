@@ -29,11 +29,11 @@ before_script:
 install: 
     # Install gtest without sudo 
     - mkdir ~/gtest && mkdir ~/gtest/include && cd ~/gtest
-    - cp -r include/gtest ~/gtest/include
     - export CPLUS_INCLUDE_PATH=$(pwd)/include
     - export LIBRARY_PATH=$(pwd)
     - ls .
     - cp -r /usr/src/gtest/* ./
+    - cp -r /usr/src/gtest/include/* ./include/
     # cp -r /usr/src/gtest/* ./
     - pwd
     - ls .
