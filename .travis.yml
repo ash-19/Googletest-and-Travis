@@ -48,6 +48,10 @@ install:
     - ls ../../../../vagrant/
     - ls ../../../../travis/
     - ls /usr/local/maven/
+    - cd ../../../gtest/
+    - make clean
+    - make all
+    - ls .
     
     
 script:
