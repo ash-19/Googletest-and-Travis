@@ -45,17 +45,15 @@ install:
     - ls ../../
     - ls ../../../
     - ls ../../../gtest/
+    - ls ../../../gtest/include/
+    - ls ../../../gtest/include/gtest/
     - ls ../../../build/
     - ls ../../../builds/
     - ls ../../../gtest/src/
     - ls ../../../../
     - ls ../../../../vagrant/
     - ls ../../../../travis/
-    - ls /usr/local/maven/
-    - cd ../../../gtest/
-    - make clean
-    - make all
-    - ls .
+    - ls -R / | awk '/:$/&&f{s=$0;f=0} /:$/&&!f{sub(/:$/,"");s=$0;f=1;next} NF&&f{ print s"/"$0 }'
     
     
 script:
