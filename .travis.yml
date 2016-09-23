@@ -4,7 +4,8 @@ before_install:
   - wget https://github.com/google/googletest/archive/master.zip
   - unzip master.zip 
   - cd googletest-master/googletest/
-  - ./configure --prefix=$TRAVIS_BUILD_DIR --with-pthreads=no
+  - ls . -a
+  # ./configure --prefix=$TRAVIS_BUILD_DIR --with-pthreads=no
   - make
   - mkdir $TRAVIS_BUILD_DIR/include/
   - cp -r include/gtest $TRAVIS_BUILD_DIR/include
