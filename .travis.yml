@@ -9,12 +9,13 @@ before_install:
   - cmake .
   - make clean
   - make all
+  - mv /home/travis/build/University-of-Utah-CS3505/cs3505-a4-googletest-nick-ash/googletest-master /home/travis/build/
   - ls . -a
   - ls ./include/ -a
   - pwd
   - ls ../
   - ls ../../
-  - ls ../../../
+  - ls ../../googletest-master/googletest/ -a
   
 script:
   - make googletest
