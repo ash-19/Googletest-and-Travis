@@ -6,7 +6,10 @@ before_install:
   - cd googletest-master/googletest/
   - ls . -a
   # ./configure --prefix=$TRAVIS_BUILD_DIR --with-pthreads=no
-  - make
+  - cmake .
+  - make clean
+  - make all
+  - ls . -a
   - mkdir $TRAVIS_BUILD_DIR/include/
   - cp -r include/gtest $TRAVIS_BUILD_DIR/include
   - mkdir $TRAVIS_BUILD_DIR/lib/
