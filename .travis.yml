@@ -16,6 +16,9 @@ before_install:
   - ls ../
   - ls ../../
   - ls ../../googletest-master/googletest/ -a
+  - cd /home/travis/build/University-of-Utah-CS3505/cs3505-a4-googletest-nick-ash/
+  - pwd
+  -ls -a
   
 script:
-  - make googletest
+  - make test GOOGLETEST=../../googletest-master/googletest/
