@@ -1,11 +1,13 @@
+// CS 3505, A4 - Testing and Travis
+// Snehashish Mishra and Nick Porter
+// Provides tests for the Students class
+
 #include <stdio.h>
 #include "gtest/gtest.h"
 #include <string>
 #include <vector>
 #include <map>
 #include "Students.h"
-
-// TODO: stub test cases, then fill them
 
 //  Tests addUser() with valid string name and valid
 //  unsigned int ID. Tests if names and ids were indeed
@@ -184,24 +186,17 @@ TEST(AddGrade, NoGradeForName) {
         delete studentsDB;
 }
 
-// //  Tests addPhoneNumber() with invalid grade (incorrect format)
-// //  and valid id.
-// TEST(AddGrade, InvalidGrade) {
-//         Students* studentsDB = new Students();
-//         studentsDB->addUser("Pikachu", 1);
-        
-//         //TODO: implement
-
-//         delete studentsDB;
-// }
-
-//  Tests addGrades() for duplicate users. Should have different ids,
-//  phones, grades.
-TEST(AddGrade, DuplicateUsers) {
+//  Tests addGrades() for users with same id.
+TEST(AddGrade, NamesWithSameID) {
         Students* studentsDB = new Students();
         studentsDB->addUser("Pikachu", 1);
         studentsDB->addUser("Balbasaur", 1);
-        // TODO don't think we can test since we add grades by ID
+        
+        studentsDB->addGrade(1, 'A');
+        EXPECT_EQ('A', studentsDB->gradeForName("Pikachu"));
+        if(studentsDB->gradeForName("Balbasaur")) {
+                FAIL();
+        }
         
         delete studentsDB;
 }
