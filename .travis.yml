@@ -28,10 +28,14 @@ before_script:
 
 install: 
     # Install gtest without sudo 
-    - mkdir ~/gtest && cd ~/gtest
+    - mkdir ~/gtest && mkdir ~/gtest/include && cd ~/gtest
+    - export CPLUS_INCLUDE_PATH=$(pwd)/include:$CPLUS_INCLUDE_PATH
     - export LIBRARY_PATH=$(pwd)
+    - ls .
     - cp -r /usr/src/gtest/* ./
+    # cp -r /usr/src/gtest/* ./
     - pwd
+    - ls .
     - cmake -D CMAKE_INSTALL_PREFIX:PATH=./ ./ CMakeLists.txt
     - make
     - cd -
