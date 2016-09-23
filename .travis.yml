@@ -33,7 +33,7 @@ install:
     - export LIBRARY_PATH=$(pwd)
     - ls .
     - cp -r /usr/src/gtest/* ./
-    - cp -r /usr/src/gtest/include/* ./include/
+    # cp -r /usr/src/gtest/include/* ./include/
     # cp -r /usr/src/gtest/* ./
     - pwd
     - ls .
