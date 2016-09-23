@@ -134,19 +134,20 @@ TEST(AddPhoneNumber, InvalidPhoneNumber) {
         delete studentsDB;
 }
 
-//  Tests addPhoneNumber() for duplicate users. Should have different
-//  ids and different phone numbers.
-TEST(AddPhoneNumber, DuplicateUser) {
+//  Tests addPhoneNumber() for students with same id.
+TEST(AddPhoneNumber, NamesWithSameID) {
         Students* studentsDB = new Students();
 
-        // Don't think we can test for this given the methods provided'
-
         studentsDB->addUser("David", 1);
-        studentsDB->addUser("David", 2);
+        studentsDB->addUser("Pikachu", 1);
+
         studentsDB->addPhoneNumbers(1, "100-100-1000");
-        studentsDB->addPhoneNumbers(2, "100-100-1001");
-        // If we can only get phone numbers by names, there is not a way to test this.
-        EXPECT_EQ("100-100-1000", studentsDB->phoneForName("David"));
+        studentsDB->addPhoneNumbers(1, "100-100-1002");
+        EXPECT_EQ("100-100-1002", studentsDB->phoneForName("Pikachu"));
+
+        if(studentsDB->phoneForName("David") == "100-100-1002") {
+                FAIL();
+        }
 
         delete studentsDB;
 }
@@ -194,7 +195,7 @@ TEST(AddGrade, NamesWithSameID) {
         
         studentsDB->addGrade(1, 'A');
         EXPECT_EQ('A', studentsDB->gradeForName("Pikachu"));
-        if(studentsDB->gradeForName("Balbasaur")) {
+        if(studentsDB->gradeForName("Balbasaur") == 'A') {
                 FAIL();
         }
         
@@ -286,7 +287,7 @@ TEST(RemoveStudent, ExceptionNoName) {
         delete studentsDB;
 }
 
-//  Tests if the phoneNumber was also removed after removing a student from
+//  Tests if all the info was also removed after removing a student from
 //  the map.
 TEST(RemoveStudent, PhoneRemoved) {
         Students* studentsDB = new Students();
@@ -297,9 +298,8 @@ TEST(RemoveStudent, PhoneRemoved) {
         studentsDB->removeStudent("Pikachu");
         EXPECT_FALSE(studentsDB->nameExists("Pikachu"));
 
-        // Add a new name to the same id and ask for grade
-        studentsDB->addUser("Balbasaur", 1);
-        ASSERT_THROW(studentsDB->phoneForName("Balbasaur"), std::out_of_range);
+        // Try to get info for the just removed student
+        ASSERT_THROW(studentsDB->phoneForName("Pikachu"), std::out_of_range);
 
         delete studentsDB;
 }
@@ -315,24 +315,24 @@ TEST(RemoveStudent, GradeRemoved) {
         studentsDB->removeStudent("Pikachu");
         EXPECT_FALSE(studentsDB->nameExists("Pikachu"));
 
-        // Add a new name to the same id and ask for grade
-        studentsDB->addUser("Balbasaur", 1);
-        ASSERT_THROW(studentsDB->gradeForName("Balbasaur"), std::out_of_range);
+        ASSERT_THROW(studentsDB->gradeForName("Pikachu"), std::out_of_range);
+        ASSERT_THROW(studentsDB->idForName("Pikachu"), std::out_of_range);
 
         delete studentsDB;
 }
 
-//  Tests numberOfNames() after deleting one of the duplicate users.
-//  Check if both removed? If they were, that's bad!!!
-TEST(RemoveStudent, DuplicateUsers) {
+//  Tests if the id was also removed after removing a student from
+//  the map.
+TEST(RemoveStudent, IDRemoved) {
         Students* studentsDB = new Students();
+        
+        // Add name with id 1, its grade and then remove it
+        studentsDB->addUser("Pikachu", 1);
+        studentsDB->addGrade(1, 'A');
+        studentsDB->removeStudent("Pikachu");
+        EXPECT_FALSE(studentsDB->nameExists("Pikachu"));
 
-        studentsDB->addUser("David", 1);
-        studentsDB->addUser("Nick", 1);
-
-        EXPECT_EQ(2, studentsDB->numberOfNames());
-        studentsDB->removeStudent("Nick");
-        EXPECT_EQ(1, studentsDB->numberOfNames());
+        ASSERT_THROW(studentsDB->idForName("Pikachu"), std::out_of_range);
 
         delete studentsDB;
 }
@@ -459,7 +459,8 @@ TEST(RemoveList, DeletedName) {
             studentsDB->addPhoneNumbers(i + 1, "333-333-3333");
         }
         studentsDB->removeStudent("Sam");
-        EXPECT_EQ(2, studentsDB->removeList(names));
+        names = {"Sam"};
+        EXPECT_EQ(0, studentsDB->removeList(names));            //TODO: should not throw exception
     
         delete studentsDB;
 }
@@ -477,9 +478,16 @@ TEST(ClearAll, OneObject) {
     
         EXPECT_EQ (0, studentsDB->numberOfNames());
         EXPECT_FALSE (studentsDB->nameExists("David"));
-        ASSERT_THROW(studentsDB->idForName("David"), std::out_of_range);
-        ASSERT_THROW(studentsDB->gradeForName("David"), std::out_of_range);
-        ASSERT_THROW(studentsDB->phoneForName("David"), std::out_of_range);
+        
+        if(studentsDB->idForName("David") == 1) {
+                FAIL();
+        }
+        if( studentsDB->gradeForName("David") == 'C') {
+                FAIL();
+        }
+        if(studentsDB->phoneForName("David") == "123-124-1234") {
+                FAIL();
+        }
     
         delete studentsDB;
 }
@@ -511,9 +519,16 @@ TEST(ClearAll, MultipleObjects) {
         // Test each name
         for(std::vector<std::string>::size_type i = 0; i != names.size(); i++) {
             EXPECT_FALSE (studentsDB->nameExists(names[i]));
-            ASSERT_THROW(studentsDB->idForName(names[i]), std::out_of_range);
-            ASSERT_THROW(studentsDB->gradeForName(names[i]), std::out_of_range);
-            ASSERT_THROW(studentsDB->phoneForName(names[i]), std::out_of_range);
+        }
+
+        if( studentsDB->idForName("David") == 1) {
+                FAIL();
+        }
+        if( studentsDB->gradeForName("Sam") == 'B') {
+                FAIL();
+        }
+        if( studentsDB->phoneForName("Frank") == "123-124-1234") {
+                FAIL();
         }
 
         delete studentsDB;
